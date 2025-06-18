@@ -2,13 +2,14 @@ from typing import List
 
 from app.common.enums import SortByType
 from sqlmodel import select
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 from .models import Item
 from .schemas import ItemSearchQueryParams
 
 
 async def get_many(
-    async_db_session: ItemSearchQueryParams,
+    async_db_session: AsyncSession,
     *,
     query_params: ItemSearchQueryParams,
 ) -> List[Item]:

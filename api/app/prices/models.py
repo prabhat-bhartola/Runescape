@@ -17,5 +17,5 @@ class Price(Base, RunescapeBaseModel, table=True):
     low: int
     low_time: int
 
-    item_id: str = Field(foreign_key="item.id", index=True)
+    item_id: str = Field(foreign_key="item.id", unique=True, index=True)
     item: Item = Relationship()

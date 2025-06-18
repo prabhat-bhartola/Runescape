@@ -32,8 +32,6 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Runescape", description=description, root_path="/api/v1", lifespan=lifespan
 )
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 app.add_middleware(
     CORSMiddleware,
@@ -50,7 +48,7 @@ if settings.ENVIRONMENT == Environment.PRODUCTION:
     async def connection_failure_exception_handler(
         request: Request, exc: ConnectionFailureError
     ):
-        logging.error(f"Connection failure: {str(exc)}")
+        log.error(f"Connection failure: {str(exc)}")
         return JSONResponse(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             content="Service is unavailable, please try again later",
@@ -58,7 +56,7 @@ if settings.ENVIRONMENT == Environment.PRODUCTION:
 
     @app.exception_handler(ValueError)
     async def value_error_exception_handler(request: Request, exc: ValueError):
-        logging.error(f"Value error: {str(exc)}")
+        log.error(f"Value error: {str(exc)}")
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"detail": str(exc)},
@@ -66,7 +64,7 @@ if settings.ENVIRONMENT == Environment.PRODUCTION:
 
     @app.exception_handler(Exception)
     async def catchall_exception_handler(request: Request, exc: Exception):
-        logging.error(f"Unhandled exception: {str(exc)}")
+        log.error(f"Unhandled exception: {str(exc)}")
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             content="Internal Server Error",

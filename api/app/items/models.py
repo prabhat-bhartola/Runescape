@@ -1,8 +1,10 @@
 import random
+from typing import Optional
 
 from app.common.models import RunescapeBaseModel
 from app.database.core import Base
-from sqlmodel import Field
+from app.prices.models import Price
+from sqlmodel import Field, Relationship
 
 
 class Item(Base, RunescapeBaseModel, table=True):
@@ -20,3 +22,5 @@ class Item(Base, RunescapeBaseModel, table=True):
     lowalch: int
     value: int = Field(index=True)
     highalch: int
+
+    price: Optional["Price"] = Relationship(back_populates="item")
