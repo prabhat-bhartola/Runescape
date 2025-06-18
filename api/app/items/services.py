@@ -30,3 +30,9 @@ async def get_many(
 
     result = await async_db_session.exec(stmt)
     return result.all()
+
+
+async def get_all_ids_set(async_db_session: AsyncSession) -> List[str]:
+    stmt = select(Item.id).where(Item.is_active == True)
+    result = await async_db_session.exec(stmt)
+    return {item_id for item_id in result.all()}
