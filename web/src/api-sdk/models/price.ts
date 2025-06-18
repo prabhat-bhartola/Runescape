@@ -1,6 +1,6 @@
 import { RunescapeBaseSchema } from "./base_model";
 
-export interface PriceRead extends RunescapeBaseSchema {
+export interface Price extends RunescapeBaseSchema {
   high: number;
   high_time: number;
   low: number;

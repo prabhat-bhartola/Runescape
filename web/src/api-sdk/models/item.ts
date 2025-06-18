@@ -1,7 +1,7 @@
 import { RunescapeBaseSchema } from "./base_model";
-import { PriceRead } from "./price";
+import { Price } from "./price";
 
-export interface ItemRead extends RunescapeBaseSchema {
+export interface Item extends RunescapeBaseSchema {
   id: string;
   name: string;
   examine: string;
@@ -11,5 +11,5 @@ export interface ItemRead extends RunescapeBaseSchema {
   value: number;
   highalch?: number;
   icon: string;
-  price?: PriceRead;
+  price?: Price;
 }
