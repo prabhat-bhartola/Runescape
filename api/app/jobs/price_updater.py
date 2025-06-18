@@ -28,20 +28,34 @@ async def update_prices_periodically(
             }
 
             # Compare API prices with DB prices
+            new_prices = []
             updated_prices = []
-            for item_id, new_price_data in api_prices.items():
+            for item_id, new_price_data in api_prices["data"].items():
                 old_price = db_prices.get(item_id)
-                if not old_price:
-                    continue  # item not in DB, or not tracked
-                if (
-                    old_price.high != new_price_data["high"]
-                    or old_price.low != new_price_data["low"]
-                ):
-                    updated_prices.append(
-                        (item_id, new_price_data["high"], new_price_data["low"])
+
+                high = new_price_data.get("high")
+                high_time = new_price_data.get("highTime")
+                low = new_price_data.get("low")
+                low_time = new_price_data.get("lowTime")
+
+                if not old_price:  # item not in DB, or not tracked
+                    new_prices.append(
+                        Price(
+                            item_id=item_id,
+                            high=high,
+                            high_time=high_time,
+                            low=low,
+                            low_time=low_time,
+                        )
                     )
+                elif old_price.high != high or old_price.low != low:
+                    updated_prices.append((item_id, high, low))
 
             log.info(f"Found {len(updated_prices)} items to update.")
+
+            # Bulk add
+            if new_prices:
+                async_db_session.add_all(new_prices)
 
             # Bulk update
             if updated_prices:
@@ -61,6 +75,6 @@ async def update_prices_periodically(
 
             log.info("Prices updated successfully.")
         except Exception as e:
-            log.error(f"Error updating prices: {e}")
+            log.error(f"Error updating prices: {e}", exc_info=True)
         finally:
             await asyncio.sleep(interval_seconds)

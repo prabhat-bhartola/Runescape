@@ -19,11 +19,10 @@ class ItemBaseSchema(BaseModel):
     value: int
     highalch: Optional[int]
     icon: str
-    price: Optional[PriceRead] = None  # Assuming price is an integer for simplicity
 
 
 class ItemRead(RunescapeBaseSchema, ItemBaseSchema):
-    ...
+    price: Optional[PriceRead] = None
 
 
 class ItemCreate(ItemBaseSchema):
