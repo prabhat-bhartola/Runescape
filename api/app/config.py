@@ -37,17 +37,17 @@ class AppSettings(BaseSettings):
 
 class RuinscapeURLSettings(BaseSettings):
     RUINSCAPE_BASE_URL: str = "https://prices.runescape.wiki/api/v1/osrs"
-    RUINSCAPE_ITEM_MAPPING_URL: str = None
-    RUINSCAPE_ITEM_PRICES_URL: str = None
+    RUINSCAPE_ITEM_MAPPING_URL: str = ""
+    RUINSCAPE_ITEM_PRICES_URL: str = ""
 
     model_config = SettingsConfigDict(env_prefix="")
 
     def __init__(self, **data):
         super().__init__(**data)
         # Set dependent URLs if not provided
-        if self.RUINSCAPE_ITEM_MAPPING_URL is None:
+        if self.RUINSCAPE_ITEM_MAPPING_URL is "":
             self.RUINSCAPE_ITEM_MAPPING_URL = f"{self.RUINSCAPE_BASE_URL}/mapping"
-        if self.RUINSCAPE_ITEM_PRICES_URL is None:
+        if self.RUINSCAPE_ITEM_PRICES_URL is "":
             self.RUINSCAPE_ITEM_PRICES_URL = f"{self.RUINSCAPE_BASE_URL}/latest"
 
 

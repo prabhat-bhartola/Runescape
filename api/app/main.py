@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from app.api import api_router
 from app.config import settings
+from app.database.core import async_session
 from app.enums import Environment
 from app.jobs.price_updater import update_prices_periodically
 from app.models import *  # noqa
@@ -23,9 +24,13 @@ APIs for Runescape.
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    asyncio.create_task(update_prices_periodically())
-
-    yield
+    async with async_session() as session:
+        try:
+            # You can pass this session to your async job
+            asyncio.create_task(update_prices_periodically(session))
+            yield
+        finally:
+            await session.close()
 
 
 # TODO Configure by environment

@@ -1,7 +1,6 @@
 import ulid
 from app.common.models import RunescapeBaseModel
 from app.database.core import Base
-from app.items.models import Item
 from sqlmodel import Field, Relationship
 
 
@@ -18,4 +17,4 @@ class Price(Base, RunescapeBaseModel, table=True):
     low_time: int
 
     item_id: str = Field(foreign_key="item.id", unique=True, index=True)
-    item: Item = Relationship()
+    item: "Item" = Relationship()

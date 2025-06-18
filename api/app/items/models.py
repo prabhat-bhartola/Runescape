@@ -3,7 +3,6 @@ from typing import Optional
 
 from app.common.models import RunescapeBaseModel
 from app.database.core import Base
-from app.prices.models import Price
 from sqlmodel import Field, Relationship
 
 

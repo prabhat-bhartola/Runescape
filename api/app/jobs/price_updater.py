@@ -24,7 +24,7 @@ async def update_prices_periodically(
 
             api_prices = await fetch_prices()
             db_prices: Dict[str, Price] = {
-                price.item_id: price for price in await get_all_prices()
+                price.item_id: price for price in await get_all_prices(async_db_session)
             }
 
             # Compare API prices with DB prices
