@@ -1,12 +1,58 @@
 "use client";
 
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { useItemList } from "@/api-sdk/hooks/item.hook";
 import Spinner from "@/components/spinner";
 import { Item } from "@/api-sdk/models/item";
+import WSService from "@/services/websocket.service";
+import { PriceWS } from "@/api-sdk/models/price";
 
-export default function Home() {
-  const { items, isLoading, isError, mutate } = useItemList();
+export default function PriceTable() {
+  const { items: swrItems, isLoading, isError, mutate } = useItemList();
+
+  // Local state that holds items with updated prices merged in
+  const [items, setItems] = useState<Item[]>([]);
+
+  // Sync local state when SWR items change (initial load or refetch)
+  useEffect(() => {
+    if (swrItems) {
+      setItems(swrItems);
+    }
+  }, [swrItems]);
+
+  useEffect(() => {
+    const ws = WSService.getInstance();
+
+    const handleNewPrices = (newPrices: PriceWS[]) => {
+      setItems((prevItems) => {
+        const itemsMap = new Map(prevItems.map((item) => [item.id, item]));
+
+        // For each updated price, merge price info into matching item
+        newPrices.forEach((priceUpdate) => {
+          const item = itemsMap.get(priceUpdate.item_id);
+          if (item) {
+            // Create a new item object with updated price
+            itemsMap.set(priceUpdate.item_id, {
+              ...item,
+              price: {
+                ...item.price,
+                ...priceUpdate,
+              },
+            });
+          }
+        });
+
+        return Array.from(itemsMap.values());
+      });
+    };
+
+    ws.addMessageListener(handleNewPrices);
+
+    return () => {
+      ws.removeMessageListener(handleNewPrices);
+    };
+  }, []);
 
   if (isLoading) {
     return <Spinner />;

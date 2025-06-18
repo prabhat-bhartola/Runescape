@@ -9,9 +9,11 @@ export interface Price extends RunescapeBaseSchema {
 
 export interface PriceWS {
   id: string;
-  item_id: number;
+  item_id: string;
   high: number;
   high_time: number;
   low: number;
   low_time: number;
+  created_at?: Date;
+  updated_at?: Date;
 }
