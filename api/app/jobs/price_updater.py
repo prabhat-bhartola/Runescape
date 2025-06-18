@@ -82,6 +82,7 @@ async def update_prices_periodically(
 
                 # Notify WebSocket clients about the updated prices
                 await ws_conn_manager.broadcast_json(updated_prices)
+                print(f"Sent {len(updated_prices)} items")
 
             await async_db_session.commit()
 
