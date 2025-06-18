@@ -1,15 +1,17 @@
-import random
 from datetime import datetime
+from uuid import UUID, uuid4
 
 import pytz
 from sqlalchemy import event
 from sqlmodel import DateTime, Field, SQLModel
 
 
-class SwarmBaseModel(SQLModel):
-    id: str = Field(
-        default_factory=lambda: str(random.randint(1000, 9999))
-    )  # Putting id as random string for simplicity
+class RunescapeBaseModel(SQLModel):
+    id: UUID = Field(
+        default_factory=uuid4,
+        primary_key=True,
+        nullable=False,
+    )
 
     is_active: bool = Field(default=True)
 
