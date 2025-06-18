@@ -1,5 +1,4 @@
-import json
-from typing import Dict, List
+from typing import Any, List
 
 from fastapi import WebSocket
 
@@ -12,14 +11,23 @@ class WSConnectionManager:
         await websocket.accept()
         self.active_connections.append(websocket)
 
+    async def disconnect(self, websocket: WebSocket):
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+
     async def broadcast(self, message: str):
         for connection in self.active_connections:
             await connection.send_text(message)
 
-    async def broadcast_json(self, data: List[Dict]):
-        message = json.dumps(data)
+    async def broadcast_json(self, data: Any):
+        disconnected = []
         for connection in self.active_connections:
-            await connection.send_text(message)
+            try:
+                await connection.send_json(data)
+            except Exception:
+                disconnected.append(connection)
+        for conn in disconnected:
+            await self.disconnect(conn)
 
 
 ws_conn_manager = WSConnectionManager()
