@@ -7,14 +7,11 @@ from app.config import settings
 from app.enums import Environment
 from app.jobs.price_updater import update_prices_periodically
 from app.models import *  # noqa
-from app.rate_limiter import limiter
 from asyncpg.exceptions import ConnectionFailureError
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
-from slowapi import _rate_limit_exceeded_handler
-from slowapi.errors import RateLimitExceeded
 
 log = logging.getLogger(__name__)
 
