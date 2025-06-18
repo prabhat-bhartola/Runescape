@@ -23,9 +23,12 @@ export default function Home() {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead className="bg-gray-100">
           <tr>
-            <th className="border border-gray-300 px-4 py-2 text-left">Icon</th>
+            <th className="border border-gray-300 px-4 py-2 text-left"></th>
             <th className="border border-gray-300 px-4 py-2 text-left">ID</th>
             <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Members
+            </th>
             <th className="border border-gray-300 px-4 py-2 text-left">
               Limit
             </th>
@@ -60,6 +63,9 @@ export default function Home() {
               </td>
               <td className="border border-gray-300 px-4 py-2">{item.id}</td>
               <td className="border border-gray-300 px-4 py-2">{item.name}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.members ? "✅" : "❌"}
+              </td>
               <td className="border border-gray-300 px-4 py-2">
                 {item.limit || "-"}
               </td>
