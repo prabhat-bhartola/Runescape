@@ -63,7 +63,7 @@ async def update_prices_periodically(
                     updated_prices.append(
                         {
                             "id": id,
-                            "item_id": item_id,
+                            "item_id": item_id,  # No need to update item_id
                             "low": low,
                             "low_time": low_time,
                             "high": high,
