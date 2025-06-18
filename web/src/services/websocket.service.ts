@@ -16,9 +16,9 @@ class WSService {
   }
 
   private initialize() {
-    this.socket = new WebSocket(`${process.env.NEXT_PUBLIC_WS_V1_BASE_URL}ws`);
+    this.socket = new WebSocket(`${process.env.NEXT_PUBLIC_WS_V1_BASE_URL}/ws`);
 
-    this.socket.onmessage = this.onMessage;
+    this.socket.onmessage = this.onMessage.bind(this);
     this.socket.onerror = (error) => {
       console.error("WebSocket error:", error);
     };
