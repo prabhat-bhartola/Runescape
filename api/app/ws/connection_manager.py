@@ -1,4 +1,5 @@
-from typing import Dict
+import json
+from typing import Dict, List
 from uuid import UUID
 
 from fastapi import WebSocket
@@ -16,6 +17,11 @@ class WSConnectionManager:
         await self.active_connections[user_id].send_text(message)
 
     async def broadcast(self, message: str):
+        for connection in self.active_connections.values():
+            await connection.send_text(message)
+
+    async def broadcast_json(self, data: List[Dict]):
+        message = json.dumps(data)
         for connection in self.active_connections.values():
             await connection.send_text(message)
 

@@ -7,6 +7,7 @@ from app.prices.models import Price
 from app.prices.services import bulk_update as bulk_update_prices
 from app.prices.services import get_all as get_all_prices
 from app.prices.utils import fetch_prices
+from app.ws.connection_manager import ws_conn_manager
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 log = logging.getLogger(__name__)
@@ -60,7 +61,14 @@ async def update_prices_periodically(
                     )
                 elif old_price.high != high or old_price.low != low:
                     updated_prices.append(
-                        {"id": id, "item_id": item_id, "high": high, "low": low}
+                        {
+                            "id": id,
+                            "item_id": item_id,
+                            "low": low,
+                            "low_time": low_time,
+                            "high": high,
+                            "high_time": high_time,
+                        }  # TODO Only update changed fields
                     )
 
             log.info(f"Found {len(updated_prices)} items to update.")
@@ -77,6 +85,9 @@ async def update_prices_periodically(
                 )
 
             await async_db_session.commit()
+
+            # Notify WebSocket clients about the updated prices
+            await ws_conn_manager.broadcast_json(updated_prices)
 
             log.info("Prices updated successfully.")
         except Exception as e:
