@@ -18,4 +18,6 @@ async def get_all(async_db_session: AsyncSession) -> List[Price]:
 async def bulk_update(
     async_db_session: AsyncSession, *, prices_list: List[Dict]
 ) -> None:
-    await async_db_session.bulk_update_mappings(Price, prices_list)
+    await async_db_session.run_sync(
+        lambda sync_session: sync_session.bulk_update_mappings(Price, prices_list)
+    )

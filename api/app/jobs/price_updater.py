@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Dict
+from typing import Dict, List
 
 from app.items.services import get_all_ids_set
 from app.prices.models import Price
@@ -32,12 +32,16 @@ async def update_prices_periodically(
 
             # Compare API prices with DB prices
             new_prices = []
-            updated_prices = []
+            updated_prices: List[Dict] = []
             for item_id, new_price_data in api_prices["data"].items():
                 if item_id not in existing_item_ids_set:
                     continue  # Skip items not in the DB
 
                 old_price = db_prices.get(item_id)
+
+                id = new_price_data.get("id")
+                if not id:
+                    continue  # Skip if no ID in new price data
 
                 high = new_price_data.get("high")
                 high_time = new_price_data.get("highTime")
@@ -55,7 +59,9 @@ async def update_prices_periodically(
                         )
                     )
                 elif old_price.high != high or old_price.low != low:
-                    updated_prices.append((item_id, high, low))
+                    updated_prices.append(
+                        {"id": id, "item_id": item_id, "high": high, "low": low}
+                    )
 
             log.info(f"Found {len(updated_prices)} items to update.")
 
@@ -67,14 +73,7 @@ async def update_prices_periodically(
             if updated_prices:
                 await bulk_update_prices(
                     async_db_session,
-                    prices_list=[
-                        {
-                            "item_id": item_id,
-                            "high": high,
-                            "low": low,
-                        }
-                        for item_id, high, low in updated_prices
-                    ],
+                    prices_list=[price for price in updated_prices],
                 )
 
             await async_db_session.commit()
