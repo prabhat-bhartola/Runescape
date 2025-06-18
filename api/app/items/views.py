@@ -15,4 +15,4 @@ async def get_items(
     query_params: ItemSearchQueryParams = Depends(),
     async_db_session: AsyncSession = Depends(get_async_session),
 ):
-    return await get_many(async_db_session=async_db_session, query_params=query_params)
+    return await get_many(async_db_session, query_params=query_params)
