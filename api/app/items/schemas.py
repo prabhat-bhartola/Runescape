@@ -12,11 +12,11 @@ class ItemBaseSchema(BaseModel):
     id: str
     name: str
     examine: str
-    limit: int
+    limit: Optional[int]
     members: bool
-    lowalch: int
+    lowalch: Optional[int]
     value: int
-    highalch: int
+    highalch: Optional[int]
     icon: str
 
 

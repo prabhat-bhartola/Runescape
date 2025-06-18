@@ -16,10 +16,10 @@ class Item(Base, RunescapeBaseModel, table=True):
     name: str = Field(index=True, nullable=False)
     icon: str
     examine: str
-    limit: int
+    limit: Optional[int] = Field(nullable=True)
     members: bool
-    lowalch: int
+    lowalch: Optional[int] = Field(nullable=True)
     value: int = Field(index=True)
-    highalch: int
+    highalch: Optional[int] = Field(nullable=True)
 
     price: Optional["Price"] = Relationship(back_populates="item")
