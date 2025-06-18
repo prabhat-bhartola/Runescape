@@ -11,3 +11,6 @@ async def websocket_endpoint(
     websocket: WebSocket,
 ):
     await ws_conn_manager.connect(websocket)
+
+    async for data in websocket.iter_text():
+        ...
