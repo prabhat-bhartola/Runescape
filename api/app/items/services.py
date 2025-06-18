@@ -1,6 +1,7 @@
 from typing import List
 
 from app.common.enums import SortByType
+from sqlalchemy.orm import selectinload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -13,7 +14,9 @@ async def get_many(
     *,
     query_params: ItemSearchQueryParams,
 ) -> List[Item]:
-    stmt = select(Item).where(Item.is_active == True)
+    stmt = stmt = (
+        select(Item).options(selectinload(Item.price)).where(Item.is_active == True)
+    )
 
     if query_params.name_like is not None:
         stmt = stmt.where(Item.name.like("%{}%".format(query_params.name_like)))

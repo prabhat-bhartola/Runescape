@@ -1,6 +1,7 @@
 from typing import Optional
 
 from app.common.schemas import RunescapeBaseSchema, SortPaginateQuery
+from app.prices.schemas import PriceRead
 from pydantic import BaseModel
 
 
@@ -18,6 +19,7 @@ class ItemBaseSchema(BaseModel):
     value: int
     highalch: Optional[int]
     icon: str
+    price: Optional[PriceRead] = None  # Assuming price is an integer for simplicity
 
 
 class ItemRead(RunescapeBaseSchema, ItemBaseSchema):

@@ -15,7 +15,7 @@ config = ConfigDict(
 
 
 class RunescapeBaseSchema(BaseModel):
-    id: UUID
+    id: str
     created_at: datetime
     updated_at: datetime
 
