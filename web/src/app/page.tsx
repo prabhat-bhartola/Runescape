@@ -32,7 +32,16 @@ export default function Home() {
               Value
             </th>
             <th className="border border-gray-300 px-4 py-2 text-left">
-              Price (High / Low)
+              High Alch
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Low Alch
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              High Price
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Low Price
             </th>
           </tr>
         </thead>
@@ -54,9 +63,16 @@ export default function Home() {
               </td>
               <td className="border border-gray-300 px-4 py-2">{item.value}</td>
               <td className="border border-gray-300 px-4 py-2">
-                {item.price
-                  ? `High: ${item.price.high} / Low: ${item.price.low}`
-                  : "No price data"}
+                {item.highalch ?? "-"}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.lowalch ?? "-"}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.price?.high ?? "-"}
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                {item.price?.low ?? "-"}
               </td>
             </tr>
           ))}
