@@ -40,10 +40,6 @@ async def update_prices_periodically(
 
                 old_price = db_prices.get(item_id)
 
-                id = new_price_data.get("id")
-                if not id:
-                    continue  # Skip if no ID in new price data
-
                 high = new_price_data.get("high")
                 high_time = new_price_data.get("highTime")
                 low = new_price_data.get("low")
@@ -62,7 +58,7 @@ async def update_prices_periodically(
                 elif old_price.high != high or old_price.low != low:
                     updated_prices.append(
                         {
-                            "id": id,
+                            "id": old_price.id,
                             "item_id": item_id,  # No need to update item_id
                             "low": low,
                             "low_time": low_time,
@@ -84,10 +80,10 @@ async def update_prices_periodically(
                     prices_list=[price for price in updated_prices],
                 )
 
-            await async_db_session.commit()
+                # Notify WebSocket clients about the updated prices
+                await ws_conn_manager.broadcast_json(updated_prices)
 
-            # Notify WebSocket clients about the updated prices
-            await ws_conn_manager.broadcast_json(updated_prices)
+            await async_db_session.commit()
 
             log.info("Prices updated successfully.")
         except Exception as e:
