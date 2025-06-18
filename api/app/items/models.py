@@ -9,11 +9,11 @@ class Item(Base, RunescapeBaseModel, table=True):
     id: str = Field(
         default_factory=lambda: str(random.randint(1000, 9999))
     )  # Putting id as random string for simplicity
-    name: str
+    name: str = Field(index=True, nullable=False)
+    icon: str
     examine: str
     limit: int
     members: bool
     lowalch: int
-    value: int
+    value: int = Field(index=True)
     highalch: int
-    icon: str
