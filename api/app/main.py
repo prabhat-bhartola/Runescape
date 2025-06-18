@@ -26,7 +26,6 @@ APIs for Runescape.
 async def lifespan(app: FastAPI):
     async with async_session() as session:
         try:
-            # You can pass this session to your async job
             asyncio.create_task(update_prices_periodically(session))
             yield
         finally:

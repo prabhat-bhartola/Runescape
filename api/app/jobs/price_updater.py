@@ -41,6 +41,8 @@ async def update_prices_periodically(
                         (item_id, new_price_data["high"], new_price_data["low"])
                     )
 
+            log.info(f"Found {len(updated_prices)} items to update.")
+
             # Bulk update
             if updated_prices:
                 await bulk_update_prices(
@@ -54,6 +56,8 @@ async def update_prices_periodically(
                         for item_id, high, low in updated_prices
                     ],
                 )
+
+            await async_db_session.commit()
 
             log.info("Prices updated successfully.")
         except Exception as e:
