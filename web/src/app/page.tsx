@@ -24,6 +24,7 @@ export default function Home() {
         <thead className="bg-gray-100">
           <tr>
             <th className="border border-gray-300 px-4 py-2 text-left">Icon</th>
+            <th className="border border-gray-300 px-4 py-2 text-left">ID</th>
             <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
             <th className="border border-gray-300 px-4 py-2 text-left">
               Limit
@@ -57,6 +58,7 @@ export default function Home() {
                   className="w-10 h-10 rounded-full object-cover"
                 />
               </td>
+              <td className="border border-gray-300 px-4 py-2">{item.id}</td>
               <td className="border border-gray-300 px-4 py-2">{item.name}</td>
               <td className="border border-gray-300 px-4 py-2">
                 {item.limit || "-"}
