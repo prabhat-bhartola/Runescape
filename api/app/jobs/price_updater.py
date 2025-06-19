@@ -34,6 +34,7 @@ async def update_prices_periodically(
             # Compare API prices with DB prices
             new_prices = []
             updated_prices: List[Dict] = []
+            price_updates_to_broadcast = []
             for item_id, new_price_data in api_prices["data"].items():
                 if item_id not in existing_item_ids_set:
                     continue  # Skip items not in the DB
@@ -46,26 +47,29 @@ async def update_prices_periodically(
                 low_time = new_price_data.get("lowTime")
 
                 if not old_price:  # Price not in DB
-                    new_prices.append(
-                        Price(
-                            item_id=item_id,
-                            high=high,
-                            high_time=high_time,
-                            low=low,
-                            low_time=low_time,
-                        )
+                    price = Price(
+                        item_id=item_id,
+                        high=high,
+                        high_time=high_time,
+                        low=low,
+                        low_time=low_time,
                     )
+                    new_prices.append(price)
+
+                    price_updates_to_broadcast.append(price.model_dump())
                 elif old_price.high != high or old_price.low != low:
-                    updated_prices.append(
-                        {
-                            "id": old_price.id,
-                            "item_id": item_id,  # No need to update item_id
-                            "low": low,
-                            "low_time": low_time,
-                            "high": high,
-                            "high_time": high_time,
-                        }  # TODO Only update changed fields
-                    )
+                    update_data = {
+                        "id": old_price.id,
+                        "item_id": item_id,  # No need to update item_id
+                        "low": low,
+                        "low_time": low_time,
+                        "high": high,
+                        "high_time": high_time,
+                    }  # TODO Only update changed fields
+
+                    updated_prices.append(update_data)
+
+                    price_updates_to_broadcast.append(update_data)
 
             log.info(f"Found {len(updated_prices)} items to update.")
 
@@ -81,8 +85,9 @@ async def update_prices_periodically(
                 )
 
                 # Notify WebSocket clients about the updated prices
-                await ws_conn_manager.broadcast_json(updated_prices)
                 print(f"Sent {len(updated_prices)} items")
+
+            await ws_conn_manager.broadcast_json(price_updates_to_broadcast)
 
             await async_db_session.commit()
 
