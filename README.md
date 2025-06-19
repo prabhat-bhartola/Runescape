@@ -55,6 +55,7 @@ A full-stack web application built with FastAPI, React/Next.js, and PostgreSQL, 
 - Whenever the project is run, we fetch items from `https://prices.runescape.wiki/api/v1/osrs/mapping` and insert them in db.
 - There is a background task running every 30 seconds that fetches new prices for our items, identifies which prices are updated and updates them in db. There are some prices for items that may not exist in out items table, we discard those prices (Typically 1-2%).
 - After the prices are updated, we send the data to frontend via websockets and frontend updates the affected prices.
+- This can be verified by deleting all entries from the price table. They are automatically populated after 30 seconds.
 
 ### Some things that could have been better?
 
