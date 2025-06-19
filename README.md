@@ -94,7 +94,7 @@ Rest of the things like initializing db, running migrations, populating data are
 - After the prices are updated, we send the data to frontend via websockets and frontend only updates the affected prices.
 - This can be verified by deleting all entries from the price table. They are automatically populated after 30 seconds when they're fetched again.
 
-### Some things that could have been better?
+### Limitations/Improvements
 
 1. **Maintaining price history** - Whenever we get an updated price, we update it in db. Price history will allow users to look at past trends.
 2. **Pagination** - Currently we're fetching 1000 entries. Pagination is implemented from backend but not from frontent.
