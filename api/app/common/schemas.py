@@ -25,7 +25,7 @@ class RunescapeBaseSchema(BaseModel):
 class SortPaginateQuery(BaseModel):
     sort_by: Optional[SortByType] = SortByType.ASC
     skip: Optional[int] = Field(default=0)
-    limit: Optional[int] = Field(default=50, ge=0, le=100)
+    limit: Optional[int] = Field(default=1000, ge=0, le=50000)
 
 
 class Brief(BaseModel):

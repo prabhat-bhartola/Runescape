@@ -69,7 +69,7 @@ export default function PriceTable() {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead className="bg-gray-100">
           <tr>
-            <th className="border border-gray-300 px-4 py-2 text-left"></th>
+            <th className="border border-gray-300 px-4 py-2 text-left min-w-[80px]"></th>
             <th className="border border-gray-300 px-4 py-2 text-left">ID</th>
             <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
             <th className="border border-gray-300 px-4 py-2 text-left">
@@ -98,7 +98,7 @@ export default function PriceTable() {
         <tbody>
           {items.map((item: Item) => (
             <tr key={item.id} className="hover:bg-gray-50">
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
                 <img
                   src={`https://oldschool.runescape.wiki/images/${encodeURIComponent(
                     item.icon.replace(/ /g, "_")
