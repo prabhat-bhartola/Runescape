@@ -15,7 +15,7 @@ A full-stack web application built with FastAPI, React/Next.js, and PostgreSQL, 
 
 ## DB Diagram
 
-````mermaid
+```mermaid
 erDiagram
     ITEM {
         string id PK "Random string ID"
@@ -44,6 +44,7 @@ erDiagram
     }
 
     ITEM ||--|| PRICE : has
+```
 
 ---
 
@@ -73,6 +74,8 @@ erDiagram
    ```bash
    git clone git@github.com:prabhat-bhartola/Runescape.git
    cd Runescape
+   ```
+
 ````
 
 2. **Running the project**
@@ -96,3 +99,4 @@ erDiagram
 1. **Maintaining price history** - Whenever we get an updated price, we update it in db. Price history will allow users to look at past trends.
 2. **Pagination** - Currently we're fetching 1000 entries. Pagination is implemented from backend but not from frontent.
 3. **Search, Tests etc** - Time constraint.
+````
