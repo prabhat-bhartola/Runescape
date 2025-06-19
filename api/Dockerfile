@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir --upgrade -r /api/requirements.txt
 
 COPY . /api
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8080"]
