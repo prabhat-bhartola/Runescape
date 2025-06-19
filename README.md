@@ -76,8 +76,6 @@ erDiagram
    cd Runescape
    ```
 
-````
-
 2. **Running the project**
 
    ```bash
@@ -99,4 +97,3 @@ erDiagram
 1. **Maintaining price history** - Whenever we get an updated price, we update it in db. Price history will allow users to look at past trends.
 2. **Pagination** - Currently we're fetching 1000 entries. Pagination is implemented from backend but not from frontent.
 3. **Search, Tests etc** - Time constraint.
-````
