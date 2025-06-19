@@ -73,24 +73,26 @@ erDiagram
 
    ```bash
    git clone git@github.com:prabhat-bhartola/Runescape.git
-   cd Runescape
    ```
 
 2. **Running the project**
 
    ```bash
+   cd Runescape
    docker-compose build
    docker-compose up
    ```
 
 3. Web started on `http://localhost:3000/`.
 
+Rest of the things like initializing db, running migrations, populating data are already handled.
+
 ### How things are working internally?
 
-- Whenever the project is run, we fetch items from `https://prices.runescape.wiki/api/v1/osrs/mapping` and insert them in db.
-- There is a background task running every 30 seconds that fetches new prices for our items, identifies which prices are updated and updates them in db. There are some prices for items that may not exist in out items table, we discard those prices (Typically 1-2%).
-- After the prices are updated, we send the data to frontend via websockets and frontend updates the affected prices.
-- This can be verified by deleting all entries from the price table. They are automatically populated after 30 seconds.
+- Whenever the project is run, we fetch items from `https://prices.runescape.wiki/api/v1/osrs/mapping` and insert them in db. We do it just for the sake of demonstration.
+- There is a background task running every 30 seconds that fetches new prices for our items, identifies which prices are updated and updates them in db. There are some prices for which items may not exist in db, we discard those prices (Typically around 1-2%).
+- After the prices are updated, we send the data to frontend via websockets and frontend only updates the affected prices.
+- This can be verified by deleting all entries from the price table. They are automatically populated after 30 seconds when they're fetched again.
 
 ### Some things that could have been better?
 
